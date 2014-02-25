@@ -125,7 +125,7 @@ Testeando todo
 
 La mejor forma de testear todo, como sabemos es hacer
 
-    $ git pull
+    $ git push
 
 que nos conectaría con Github y mandaría todos los cambios hacia allá. Es el paso obligado y con la configuración anterior, todo debería funcionar correctamente.
 
