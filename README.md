@@ -19,8 +19,8 @@ Configurando el proxy
 
 Antes que nada hay que editar la configuración de git para establecer el proxy que debe usar, la configuración se encuentra en ~/.gitconfig, si no se encuentra hay que crear el archivo y establecer los siguientes parámetros en él:
 
-[http]
-	proxy = http://proxy_url:proxy_port
+    [http]
+    proxy = http://proxy_url:proxy_port
 
 Con lo que obtendremos el acceso http a través del proxy.
 
@@ -29,11 +29,11 @@ Clonando el repo
 
 Ahora lo que tenemos que hacer es clonar el repo en la máquina, nos vamos a /ruta/de/nuestros/proyectos/ con
 
-$ cd /ruta/de/nuestros/proyectos/
+    $ cd /ruta/de/nuestros/proyectos/
 
 y clonamos el repositorio
 
-$ git clone https://github.com/TuNombreDeUsuario/ElRepositorioQueCreaste.git
+    $ git clone https://github.com/TuNombreDeUsuario/ElRepositorioQueCreaste.git
 
 Todo debería haber funcionado como se esperaba, git se debería haber podido conectar vía http para clonar el repo.
 
@@ -42,17 +42,17 @@ Agregando archivos
 
 Lista la clonación, entramos ahora al directorio del proyecto, en nuestro caso sería
 
-$ cd ElRepositorioQueCreaste
+    $ cd ElRepositorioQueCreaste
 
 Ahora podemos crear el típico README.MD y escribir en él la descripción del proyecto (y/o agregar todos los archivos que queramos).
 
 Obviamente, tenemos que agregarlos utilizando
 
-$ git add listado_de_archivos a_agregar
+    $ git add listado_de_archivos a_agregar
 
 o simplemente
 
-$ git add *
+    $ git add *
 
 que agregará todos los archivos del directorio.
 
@@ -63,19 +63,19 @@ Generando el par de claves
 
 Primero tenemos que verificar que no existan, si ya nos hemos conectado vía ssh es posible que ya estén ahí y si no lo hemos hecho nunca habrá que generarlas, veamos si existen:
 
-$ ls ~/.ssh/
+    $ ls ~/.ssh/
 
 Si en el listado aparecen id_rsa.pub o id_dsa.pub, las claves ya han sido generadas anteriormente, por lo que no habría que generarlas y pasaríamos al punto siguiente, sino generémoslas:
 
-$ ssh-keygen -t rsa -C "tu_email@dominio.com"
+    $ ssh-keygen -t rsa -C "tu_email@dominio.com"
 
 El comando anterior crea una clave ssh utilizando el email como etiqueta. Responderá diciendo que se está generando el par de claves rsa y nos pedirá el nombre del archivo para guardarla (el que es por defecto es el ~/.ssh/id_rsa), presionamos Enter para dejar el valor por defecto. Ahora tenemos que agregarla:
 
-$ ssh-add id_rsa
+    $ ssh-add id_rsa
 
 El sistema nos pedirá una passphrase y también deberemos repetirla para confirmarla. La passphrase es una clave que queda guardada en la máquina y permite que nos conectemos vía ssh. Aunque se encuentra en la máquina, no está en texto claro, es decir que no puede comprenderse y gracias a que está guardada, no deberemos escribirla nuevamente para conectarnos.
 
-Un ejemplo de passphrase es algo al estilo: "unicamente palomas galopan sintiendo comezon" o "ciempieces ondulantes vuelan sobre honduras". Commo escribí antes, no nos importa mucho ya que no volveremos a escribirla luego de confirmarla.
+Un ejemplo de passphrase es algo al estilo: "unicamente palomas galopan sintiendo comezon" o "ciempieces ondulantes vuelan sobre honduras". Como escribí antes, no nos importa mucho ya que no volveremos a escribirla luego de confirmarla.
 
 Luego de todo este proceso obtendremos el resultado, es decir la clave de identificación y la clave pública (que es la que nos interesa) con su fingerprint (su huella). La huella son 16 números hexadecimales separados por dos puntos (:) y es lo que nos permitirá identificar la clave.
 
@@ -84,7 +84,7 @@ Agregando la clave a Github
 
 Para obtener la clave generada hacemos
 
-$ cat ~/.ssh/id_rsa
+    $ cat ~/.ssh/id_rsa.pub
 
 Copiamos el resultado vamos al apartado "Account Settings > SSH Keys" de Github y hacemos click en "Add SSH Key". Pegamos la clave en el campo Key y le damos un nombre (este nombre nos permite recordar de dónde viene esta clave). Hacemos click en "Add Key", nos pedirá contraseña (la de Github) y listo, nos mandará al listado de claves donde podremos verificar el fingerprint de la misma con el generado en nuestra máquina, si corresponden, todo estuvo bien.
 
@@ -95,11 +95,11 @@ Hasta este punto, todo parece de una belleza y simpleza increible, aunque no tod
 
 Como mi entorno es Ubuntu, solo tengo que utilizar apt para instalar corkscrew (algo simple de instalar y fácil de configurar)
 
-$ sudo apt-get install corkscrew
+    $ sudo apt-get install corkscrew
 
 Cuando se haya instalado tendremos que editar el archivo ~/.ssh/config (si no existiera tendremos que crearlo) y agregar la siguiente línea
 
-ProxyCommand /ruta/a/corkscrew proxy_url proxy_port %h %p
+    ProxyCommand /ruta/a/corkscrew proxy_url proxy_port %h %p
 
 Obviamente colocando la ruta correcta (generalmente /usr/bin/corkscrew), cambiando proxy_url por la url de nuestro proxy y proxy_port por el puerto que tenemos que utilizar.
 
@@ -116,7 +116,7 @@ Veremos secciones denotadas por corchetes y un nombre entre ellos, ejemplos son 
 
 Tendremos que agregar la sección [user] y setear las claves "name" y "email" (sin comillas) a los valores de nuestra cuenta en Github y verificar que en la sección [remote "origin"] la clave url esté seteada de la siguiente manera:
 
-url = ssh://git@github.com/TuNombreDeUsuario/ElRepositorioQueCreaste.git
+    url = ssh://git@github.com/TuNombreDeUsuario/ElRepositorioQueCreaste.git
 
 para que nos permita conectarnos vía ssh.
 
@@ -125,7 +125,7 @@ Testeando todo
 
 La mejor forma de testear todo, como sabemos es hacer
 
-$ git pull
+    $ git pull
 
 que nos conectaría con Github y mandaría todos los cambios hacia allá. Es el paso obligado y con la configuración anterior, todo debería funcionar correctamente.
 
@@ -136,7 +136,7 @@ Bueno, hay muchas cosas por probar: que el proxy funcione, que permita las conex
 
 Una buena para probar es intentando conectarnos con Github vía ssh pero con salida verborrágica:
 
-$ ssh -vT git@github.com
+    $ ssh -vT git@github.com
 
 Lo que nos va a tirar un chorro de información sobre el intento de autenticación y los resultados del mismo, eso nos puede ayudar a detectar el problema (o no... pero es un primer acercamiento).
 
